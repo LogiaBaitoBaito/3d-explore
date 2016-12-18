@@ -1,0 +1,14 @@
+{
+  "name": "three-js-start",
+  "version": "0.9.0",
+  "description": "Starting with Three.js 3D javascript library.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Juan Zuriaga",
+  "license": "MIT",
+  "dependencies": {
+    "three": "^0.83.0"
+  }
+}
