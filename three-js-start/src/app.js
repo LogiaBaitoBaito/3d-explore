@@ -3,34 +3,38 @@
  *
  * Tutorial: https://code.tutsplus.com/tutorials/webgl-with-threejs-basics--net-35688
  */
-(function () {
+
+import { WebGLRenderer, Scene, CubeGeometry, MeshBasicMaterial, Clock, BackSide,
+  PointLight, MeshLambertMaterial, Mesh, PerspectiveCamera } from 'three';
+
   'use strict';
+
 
   var width = window.innerWidth;
   var height = window.innerHeight;
 
-  var renderer = new THREE.WebGLRenderer({ antialias: true });
+  var renderer = new WebGLRenderer({ antialias: true });
   renderer.setSize(width, height);
 
-  var scene = new THREE.Scene;
+  var scene = new Scene;
 
 
-  var cubeGeometry = new THREE.CubeGeometry(100, 100, 100);
-  var cubeMaterial = new THREE.MeshLambertMaterial({ color: 0x1ec876 });
-  var cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+  var cubeGeometry = new CubeGeometry(100, 100, 100);
+  var cubeMaterial = new MeshLambertMaterial({ color: 0x1ec876 });
+  var cube = new Mesh(cubeGeometry, cubeMaterial);
 
   cube.rotation.y = Math.PI * 45 / 180;
 
   scene.add(cube);
 
-  var camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 10000);
+  var camera = new PerspectiveCamera(45, width / height, 0.1, 10000);
 
   camera.position.y = 160;
   camera.position.z = 400;
 
   scene.add(camera);
 
-  var clock = new THREE.Clock;
+  var clock = new Clock;
 
   function render() {
     renderer.render(scene, camera);
@@ -43,13 +47,13 @@
 
   camera.lookAt(cube.position);
 
-  var skyboxGeometry = new THREE.CubeGeometry(10000, 10000, 10000);
-  var skyboxMaterial = new THREE.MeshBasicMaterial({ color: 0x000000, side: THREE.BackSide });
-  var skybox = new THREE.Mesh(skyboxGeometry, skyboxMaterial);
+  var skyboxGeometry = new CubeGeometry(10000, 10000, 10000);
+  var skyboxMaterial = new MeshBasicMaterial({ color: 0x000000, side: BackSide });
+  var skybox = new Mesh(skyboxGeometry, skyboxMaterial);
 
   scene.add(skybox);
 
-  var pointLight = new THREE.PointLight(0xffffff);
+  var pointLight = new PointLight(0xffffff);
   pointLight.position.set(0, 300, 200);
 
   scene.add(pointLight);
@@ -57,4 +61,3 @@
 
   document.body.appendChild(renderer.domElement);
 
-}());
