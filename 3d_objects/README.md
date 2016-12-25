@@ -1,9 +1,13 @@
-## Get started with three.js
+# 3D objects
 
-### Three.js playground
- 
-Base project to test the library [three.js](http://three.js).
+## Learning three.js
 
-The initial code of this project was developed following the article 
-[WebGL with Three.js: Basics](https://code.tutsplus.com/tutorials/webgl-with-threejs-basics--net-35688).
+Project to learn to use the library [three.js](http://three.js).
 
+### Base project
+
+Extracted from base [../three-js-start](../three-js-start)
+
+### Contents
+
+Use of scenes and mesh materials, operate the camera and create different geometries.
