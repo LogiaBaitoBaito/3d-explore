@@ -40,7 +40,7 @@ window.onload = () => {
 
   cube.position.x = -4;
   cube.position.y = 3;
-  cube.position.z = 0; 
+  cube.position.z = 0;
 
   cube.castShadow = true;
   scene.add(cube);
