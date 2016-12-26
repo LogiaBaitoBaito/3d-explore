@@ -13,6 +13,7 @@
   "author": "Juan Zuriaga",
   "license": "MIT",
   "dependencies": {
+    "stats.js": "^0.17.0",
     "three": "^0.83.0"
   },
   "devDependencies": {
