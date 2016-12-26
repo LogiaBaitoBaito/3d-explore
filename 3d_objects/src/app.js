@@ -6,18 +6,20 @@
 
 import * as THREE from 'three';
 import {initStats, updateStats} from './stats.js';
+import Control from './control.js';
 
 'use strict';
 
 var renderer;
 var camera;
+var scene;
 
 window.onload = () => {
 
   var width = window.innerWidth;
   var height = window.innerHeight;
 
-  var scene = new THREE.Scene;
+  scene = new THREE.Scene;
   camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 10000);
 
   renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -61,15 +63,20 @@ window.onload = () => {
   sphere.castShadow = true;
   scene.add(sphere);
 
-  let step=0;
+  let control = new Control();
+  control.add('rotationSpeed', 0.02);
+  control.add('bouncingSpeed', 0.04);
+  control.init();
+
+  let step = 0;
   const render = () => {
     updateStats();
 
-    cube.rotation.x += 0.02;
-    cube.rotation.y += 0.02;
-    cube.rotation.z += 0.02;
+    cube.rotation.x += control.get('rotationSpeed');
+    cube.rotation.y += control.get('rotationSpeed');
+    cube.rotation.z += control.get('rotationSpeed');
 
-    step+=0.04;
+    step+=control.get('bouncingSpeed');
     sphere.position.x = 20+( 10*(Math.cos(step)));
     sphere.position.y = 2 +( 10*Math.abs(Math.sin(step)));
 
