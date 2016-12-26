@@ -6,7 +6,10 @@
 
 import * as THREE from 'three';
 
-  'use strict';
+'use strict';
+
+var renderer;
+var camera;
 
 window.onload = () => {
 
@@ -14,16 +17,17 @@ window.onload = () => {
   var height = window.innerHeight;
 
   var scene = new THREE.Scene;
-  var camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
+  camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 10000);
 
-  var renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setSize(width, height);
+  renderer.setPixelRatio( window.devicePixelRatio );
   renderer.setClearColor(0xEEEEEE, 1.0);
   renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  //renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
-  var planeGeometry = new THREE.PlaneGeometry(60, 20, 1, 1);
-  var planeMaterial = new THREE.MeshLambertMaterial({color: 0xCCCCCC});
+  var planeGeometry = new THREE.PlaneGeometry(60, 20);
+  var planeMaterial = new THREE.MeshLambertMaterial({color: 0xffffff});
   var plane = new THREE.Mesh(planeGeometry, planeMaterial);
 
   plane.rotation.x = -0.5 * Math.PI;
@@ -71,9 +75,22 @@ window.onload = () => {
 
   var spotLight = new THREE.SpotLight( 0xffffff );
   spotLight.position.set( -40, 60, -10 );
+
   spotLight.castShadow = true;
+  spotLight.shadow.mapSize.width = 1536;
+  spotLight.shadow.mapSize.height = 1536;
+
   scene.add(spotLight);
 
   document.body.appendChild(renderer.domElement);
+  window.addEventListener( 'resize' , onWindowResize, false );
 
 };
+
+function onWindowResize() {
+  const SCREEN_WIDTH = window.innerWidth;
+  const SCREEN_HEIGHT = window.innerHeight;
+  renderer.setSize( SCREEN_WIDTH, SCREEN_HEIGHT );
+  camera.aspect = SCREEN_WIDTH / SCREEN_HEIGHT;
+  camera.updateProjectionMatrix();
+}
