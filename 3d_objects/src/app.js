@@ -24,7 +24,7 @@ window.onload = () => {
   renderer.setPixelRatio( window.devicePixelRatio );
   renderer.setClearColor(0xEEEEEE, 1.0);
   renderer.shadowMap.enabled = true;
-  //renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
   var planeGeometry = new THREE.PlaneGeometry(60, 20);
   var planeMaterial = new THREE.MeshLambertMaterial({color: 0xffffff});
