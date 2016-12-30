@@ -1,4 +1,4 @@
-import dat from '../node_modules/dat.gui/build/dat.gui.min.js';
+import dat from 'dat.gui/build/dat.gui.min';
 
 export default class Control {
 
