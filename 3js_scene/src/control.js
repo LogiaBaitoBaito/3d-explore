@@ -31,7 +31,8 @@ export default class Control {
     this.gui = new dat.GUI();
 
     for (let control in this.controls) {
-      if (this.cconfig[control] && this.cconfig[control].lower ) {
+      if (this.cconfig[control] && this.cconfig[control].lower !== undefined) {
+        let { lower, higher} = this.cconfig[control];
         this.gui.add(this.controls, control, lower, higher);
       } else {
         this.gui.add(this.controls, control);

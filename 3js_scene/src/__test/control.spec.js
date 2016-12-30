@@ -56,6 +56,7 @@ describe('Control', () => {
   it('should init controls', () => {
     control = new Control();
     control.add('dummyControl', 1);
+    control.addWithLimits('dummyControl2', 2, 0, 5);
 
     control.init();
 
