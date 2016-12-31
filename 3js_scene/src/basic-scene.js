@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import {initStats, updateStats} from './stats.js';
+import StatsPanel from './stats.js';
 import Control from './control.js';
 
 export default class BasicScene {
@@ -18,6 +18,7 @@ export default class BasicScene {
     this._renderer = null;
     this._camera = null;
     this._scene = null;
+    this._statsPanel = new StatsPanel();
   }
 
   init() {
@@ -41,9 +42,9 @@ export default class BasicScene {
 
     this.controls();
 
-    this.render();
+    this._statsPanel.initStats();
 
-    initStats();
+    this.render();
   }
 
   controls() {
@@ -119,7 +120,7 @@ export default class BasicScene {
   }
 
   render() {
-    updateStats();
+    this._statsPanel.updateStats();
 
     this.animate();
 
