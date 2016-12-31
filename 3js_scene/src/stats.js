@@ -2,7 +2,7 @@ import Stats from 'stats.js';
 
 'use strict'
 
-let stats = new Stats();
+let stats;
   
 export function initStats () {
   stats = new Stats();

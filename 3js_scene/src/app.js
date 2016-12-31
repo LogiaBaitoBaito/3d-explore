@@ -1,4 +1,3 @@
-import {initStats, updateStats} from './stats.js';
 import BasicScene from './basic-scene';
 
 'use strict';
@@ -16,11 +15,8 @@ window.onload = () => {
   window.addEventListener( 'resize' , () => {
     let width = window.innerWidth;
     let height = window.innerHeight;
-    basicScene.resize(() => {
-      updateStats();
-    });
+    basicScene.resize();
   }, false );
 
-  initStats();
 };
 
