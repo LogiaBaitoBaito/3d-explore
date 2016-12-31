@@ -1,5 +1,4 @@
 import * as THREE from 'three';
-import {initStats, updateStats} from './stats.js';
 import Control from './control.js';
 
 export default class BasicScene {
@@ -118,8 +117,8 @@ export default class BasicScene {
 
   }
 
-  render() {
-    updateStats();
+  render(callback) {
+    callback();
 
     this.animate();
 
