@@ -14,6 +14,8 @@ export default class BasicScene {
     this.render = this.render.bind(this);
     this.animate = this.animate.bind(this);
     this.controls = this.controls.bind(this);
+    this.addCube = this.addCube.bind(this);
+    this.eraseCube = this.eraseCube.bind(this);
 
     this._renderer = null;
     this._camera = null;
@@ -50,6 +52,12 @@ export default class BasicScene {
   controls() {
     this.control = new Control();
     this.control.addWithLimits('rotationSpeed', 0.02, 0, 0.5);
+    this.control.add('addCube', this.addCube );
+    this.control.add('removeCube', this.eraseCube );
+    this.control.add('outputObjects', () => {
+      console.log(this._scene.children);
+    });
+    this.control.addWithListen('numberOfObjects', this._scene.children.length);
     this.control.init();
   }
 
@@ -57,6 +65,12 @@ export default class BasicScene {
   drawPlane () {
 
     let planeGeometry = new THREE.PlaneGeometry(60, 40, 1, 1);
+    this._planeGeometry = {
+      params: {
+        width: planeGeometry.parameters.width,
+        height: planeGeometry.parameters.height
+      }
+    };
     let planeMaterial = new THREE.MeshLambertMaterial({color: 0xffffff});
     let plane = new THREE.Mesh(planeGeometry, planeMaterial);
     plane.receiveShadow = true;
@@ -80,21 +94,31 @@ export default class BasicScene {
     return spotLight;
   };
 
-  drawCube () {
+  addCube () {
 
-    //var cubeGeometry = new THREE.CubeGeometry(4, 4, 4);
-    //var cubeMaterial = new THREE.MeshLambertMaterial({ color: 0xff0000});
-    //var cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+    let cubeSize = Math.ceil((Math.random() * 3));
+    let cubeGeometry = new THREE.BoxGeometry(cubeSize,cubeSize,cubeSize);
+    let cubeMaterial = new THREE.MeshLambertMaterial({color: Math.random() * 0xffffff });
+    let cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+    cube.castShadow = true;
+    cube.name = 'cube-' + this._scene.children.length;
 
-    //cube.position.x = -4;
-    //cube.position.y = 3;
-    //cube.position.z = 0;
+    cube.position.x = -30 + Math.round((Math.random() * this._planeGeometry.params.width));
+    cube.position.y = Math.round((Math.random() * 5));
+    cube.position.z = -20 + Math.round((Math.random() * this._planeGeometry.params.height));
+    this._scene.add(cube);
+    console.log(this._scene.children.length);
+    this.control.set('numberOfObjects', this._scene.children.length);
+  }
 
-    //cube.castShadow = true;
-    //this._scene.add(cube);
-
-  };
-
+  eraseCube () {
+    let allChildren = this._scene.children;
+    let lastObject = allChildren[allChildren.length -1];
+    if (lastObject instanceof THREE.Mesh) {
+      this._scene.remove(lastObject);
+      this.control.set('numberOfObjects', this._scene.children.length);
+    }
+  }
 
   draw() {
     this._plane = this.drawPlane();
