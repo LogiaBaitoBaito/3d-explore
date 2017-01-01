@@ -7,3 +7,15 @@ canvas {
 .dg {
   z-index: 99 !important;
 }
+
+/**
+ * dat-gui JavaScript Controller Library
+ * http://code.google.com/p/dat-gui
+ *
+ * Override dat.gui definitions for Chrome and Safari
+ * dat.gui/src/dat/gui/_structure.scss
+ *
+ */
+.dg .slider {
+  width: 60%!important;
+}
