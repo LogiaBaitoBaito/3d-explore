@@ -1,4 +1,4 @@
-import dat from 'dat.gui/build/dat.gui';
+import dat from 'dat.gui/build/dat.gui.min';
 
 export default class Control {
 

@@ -6,7 +6,7 @@ describe('Control', () => {
 
   let control;
 
-  it('should create a instance', () => {
+  it('#constructor - should create a instance', () => {
     control = new Control();
 
     expect(control).to.be.instanceof(Control);
@@ -19,7 +19,7 @@ describe('Control', () => {
     expect(control.cconfig).to.be.empty;
   });
 
-  it('should add controls', () => {
+  it('#add - should add controls', () => {
     control = new Control();
     control.add('dummyControl', 1);
 
@@ -27,7 +27,7 @@ describe('Control', () => {
     expect(control.cconfig).to.be.empty;
   });
 
-  it('should add with limits', () => {
+  it('#addWithLimits - should add with limits', () => {
     control = new Control();
     control.addWithLimits('dummyControl', 1, 1, 2);
 
@@ -35,7 +35,7 @@ describe('Control', () => {
     expect(control.cconfig).to.deep.equal({dummyControl:{lower:1,higher:2}});
   });
 
-  it('should add with default limits', () => {
+  it('#addWithLimits - should add with default limits', () => {
     control = new Control();
     control.addWithLimits('dummyControl', 2);
 
@@ -43,7 +43,7 @@ describe('Control', () => {
     expect(control.cconfig).to.deep.equal({dummyControl:{lower:0,higher:2}});
   });
 
-  it('should get controls', () => {
+  it('#get - should get controls', () => {
     control = new Control();
     control.add('dummyControl', 1);
 
@@ -53,7 +53,22 @@ describe('Control', () => {
     expect(result).to.be.equal(1);
   });
 
-  it('should init controls', () => {
+  it('#set - should set new value to control', () => {
+    __given: 
+    control = new Control();
+    control.add('dummyControl', 1);
+    expect(control.controls).to.deep.equal({dummyControl: 1});
+
+    __then:
+    control.set('dummyControl', 2);
+
+    _expect:
+    let result = control.get('dummyControl');
+    expect(control.controls).to.deep.equal({dummyControl: 2});
+    expect(result).to.be.equal(2);
+  });
+
+  it('#init - should init controls', () => {
     control = new Control();
     control.add('dummyControl', 1);
     control.addWithLimits('dummyControl2', 2, 0, 5);
