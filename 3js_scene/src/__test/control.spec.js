@@ -1,4 +1,5 @@
 import {expect} from 'chai';
+import sinon from 'sinon';
 import Control from '../control';
 import dat from 'dat.gui/build/dat.gui.min';
 
@@ -54,18 +55,22 @@ describe('Control', () => {
   });
 
   it('#set - should set new value to control', () => {
-    __given: 
+    // given:
     control = new Control();
+    let controlSpy = sinon.stub(control, 'updateDisplay');
     control.add('dummyControl', 1);
     expect(control.controls).to.deep.equal({dummyControl: 1});
 
-    __then:
+    // when:
     control.set('dummyControl', 2);
 
-    _expect:
+    // then:
     let result = control.get('dummyControl');
     expect(control.controls).to.deep.equal({dummyControl: 2});
     expect(result).to.be.equal(2);
+    expect(controlSpy).to.be.called;
+
+    controlSpy.restore();
   });
 
   it('#init - should init controls', () => {
@@ -76,6 +81,24 @@ describe('Control', () => {
     control.init();
 
     expect(control.gui).to.be.instanceof(dat.GUI);
+  });
+
+  it('#updateDisplay - should updateDisplay', () => {
+    let spyUpdate;
+    // given
+      spyUpdate = sinon.spy();
+      control = new Control();
+      control.gui = {};
+      control.gui.__controllers = [ {
+        property: 'controller',
+        updateDisplay: spyUpdate
+      }];
+
+    // when:
+      control.updateDisplay();
+
+    // then:
+      expect(spyUpdate).to.be.called;
   });
 
 });
