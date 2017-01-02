@@ -25,6 +25,7 @@ export default class BasicScene {
 
   init() {
     this._scene = new THREE.Scene;
+    this._scene.fog = new THREE.Fog( 0xffffff, 0.015, 100);
     this._camera = new THREE.PerspectiveCamera(45, this.width / this.height, 0.1, 1000);
     this._renderer = new THREE.WebGLRenderer({ antialias: true });
     this._renderer.setSize(this.width, this.height);
