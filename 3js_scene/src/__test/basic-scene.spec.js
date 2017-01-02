@@ -1,25 +1,12 @@
 import {expect} from 'chai';
 import sinon from 'sinon';
 import * as THREE from 'three';
-import * as stats from '../stats';
+import StatsPanel from '../stats';
 import BasicScene from '../basic-scene';
 
 describe('BasicScene', () => {
 
   let basicScene;
-  // Prepare mocking for THREE and Stast.js
-  //let statsSpy;
-  //let THREESpy;
-
-  //before(() => {
-    //statsSpy = sinon.stub(stats);
-    //THREESpy = sinon.stub(THREE);
-  //});
-
-  //after(() => {
-    //stats.restore();
-    //THREE.restore();
-  //});
 
   it('#constructor - should create a new 3D Basic Scene', () => {
     let w = 1024, h = 768;
@@ -34,11 +21,11 @@ describe('BasicScene', () => {
     expect(basicScene.height).to.be.equal(h);
   });
 
-  //it('#init - should init the 3D Basic Scene', () => {
-    //let w = 1024, h = 768;
-    //basicScene = new BasicScene(w,h);
-    //basicScene.init();
+  it.skip('#init - should init the 3D Basic Scene', () => {
+    let w = 1024, h = 768;
+    basicScene = new BasicScene(w,h);
+    basicScene.init();
 
-  //});
+  });
 
 });
