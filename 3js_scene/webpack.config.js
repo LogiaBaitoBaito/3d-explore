@@ -35,6 +35,10 @@ module.exports = {
       {test: /\.js$/, loader: "eslint-loader", exclude: /node_modules/}
     ],
     loaders: [{
+      test: /\/three\/examples\/js\/.*\.js/,
+      loader: "imports?THREE=three"
+    },
+    {
       exclude: /node_modules/,
       loader: 'babel',
       query: {

@@ -1,4 +1,6 @@
 import * as THREE from 'three';
+import 'three/examples/js/geometries/ConvexGeometry.js';
+import 'three/examples/js/ParametricGeometries.js';
 import StatsPanel from './stats.js';
 import Control from './control.js';
 
@@ -97,11 +99,55 @@ export default class MultiGeometry {
   drawGeometries () {
     let geoms = [];
 
-    // Cylinder 
-    geoms.push(new THREE.CylinderGeometry(2,4,4));
+    // Cylinder (r1, r2, h)
+    geoms.push(new THREE.CylinderGeometry(1,4,4));
 
-    // Cube 
+    // Cube (b , w, h)
     geoms.push(new THREE.BoxGeometry(2, 2, 2));
+
+    // basic spherer (r)
+    geoms.push(new THREE.SphereGeometry(2));
+
+    // create a convex shape (a shape without dents)
+    // using a couple of points
+    // for instance a cube
+    var points = [
+      new THREE.Vector3(2, 2, 2),
+      new THREE.Vector3(2, 2, -2),
+      new THREE.Vector3(-2, 2, -2),
+      new THREE.Vector3(-2, 2, 2),
+      new THREE.Vector3(2, -2, 2),
+      new THREE.Vector3(2, -2, -2),
+      new THREE.Vector3(-2, -2, -2),
+      new THREE.Vector3(-2, -2, 2)
+    ];
+    geoms.push(new THREE.ConvexGeometry(points));
+
+    // create a lathgeometry
+    //http://en.wikipedia.org/wiki/Lathe_(graphics)
+    let pts = [];//points array - the path profile points will be stored here
+    let detail = .1;//half-circle detail - how many angle increments will be used to generate points
+    let radius = 3;//radius for half_sphere
+    for (let angle = 0.0; angle < Math.PI; angle += detail) { //loop from 0.0 radians to PI (0 - 180 degrees)
+      pts.push(new THREE.Vector3(Math.cos(angle) * radius, 0, Math.sin(angle) * radius));//angle/radius to x,z
+    }
+    geoms.push(new THREE.LatheGeometry(pts, 12));
+
+
+    // create a OctahedronGeometry
+    geoms.push(new THREE.OctahedronGeometry(3));
+
+    // create a geometry based on a function
+    geoms.push(new THREE.ParametricGeometry(THREE.ParametricGeometries.mobius3d, 20, 10));
+
+    geoms.push(new THREE.TetrahedronGeometry(3));
+
+    geoms.push(new THREE.TorusGeometry(3, 1, 10, 10));
+
+    geoms.push(new THREE.TorusKnotGeometry(3, 0.5, 50, 20));
+
+    geoms.push(new THREE.ParametricGeometry( THREE.ParametricGeometries.klein, 25, 25 ));
+
 
     // draw in scene
     let col = 0;
