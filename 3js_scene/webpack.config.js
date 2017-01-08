@@ -6,7 +6,8 @@ module.exports = {
     vendor: ['three', 'dat.gui/build/dat.gui.min', 'stats.js'],
     //commons: ['./src/control.js', './src/stats.js'],
     bundle: './src/app.js',
-    geometries: './src/geometries.js'
+    geometries: './src/geometries.js',
+    custom: './src/custom-geometry.js'
   },
   output: {
     path: __dirname,
@@ -15,19 +16,18 @@ module.exports = {
   },
   plugins: [
     new CommonsChunkPlugin({
-      name: "vendor",
-      filename: "vendor.js",
-      minChunks: Infinity
-    }),
-    new CommonsChunkPlugin({
       name: "commons",
       filename: "commons.js",
-      minChunks: 2,
-      chunks: ['bunde', 'geometries'],
-      children: true
+      minChunks: 3,
+      chunks: ['bundle', 'geometries', 'custom']
 
       // chunks: ["pageA", "pageB"],
       // (Only use these entries)
+    }),
+    new CommonsChunkPlugin({
+      name: "vendor",
+      filename: "vendor.js",
+      minChunks: Infinity
     })
   ],
   module: {
