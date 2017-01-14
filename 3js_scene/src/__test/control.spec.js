@@ -16,6 +16,8 @@ describe('Control', () => {
     expect(control.init).to.be.a('function');
     expect(control.controls).to.be.a('object');
     expect(control.controls).to.be.empty;
+    expect(control.folders).to.be.a('object');
+    expect(control.folders).to.be.empty;
     expect(control.cconfig).to.be.a('object');
     expect(control.cconfig).to.be.empty;
   });
@@ -44,6 +46,45 @@ describe('Control', () => {
     expect(control.cconfig).to.deep.equal({dummyControl:{lower:0,higher:2}});
   });
 
+  it('#addWithListen - should add with listen', () => {
+    // given:
+    control = new Control();
+    // then:
+    control.addWithListen('dummyControl', 2);
+    // when:
+    expect(control.controls).to.deep.equal({dummyControl: 2});
+    expect(control.cconfig).to.deep.equal({dummyControl:{listen:true}});
+  });
+
+  it('#addWithOptions - should add with options', () => {
+    // given:
+    control = new Control();
+    // then:
+    control.addWithOptions('dummyControl', 2, { option1: 'value1', option2: 'value2'});
+    // when:
+    expect(control.controls).to.deep.equal({dummyControl: 2});
+    expect(control.cconfig).to.deep.equal({dummyControl:{option1:'value1',option2:'value2'}});
+  });
+
+  it('#addWithOptions - should add with default options', () => {
+    // given:
+    control = new Control();
+    // then:
+    control.addWithOptions('dummyControl', 2);
+    // when:
+    expect(control.controls).to.deep.equal({dummyControl: 2});
+    expect(control.cconfig).to.deep.equal({dummyControl:{}});
+  });
+
+  it('#addFolder - should add folder', () => {
+    // given:
+    control = new Control();
+    // then:
+    control.addFolder('dummyFolder');
+    // when:
+    expect(control.folders).to.deep.equal({dummyFolder: null});
+  });
+
   it('#get - should get controls', () => {
     control = new Control();
     control.add('dummyControl', 1);
@@ -52,6 +93,20 @@ describe('Control', () => {
 
     expect(control.controls).to.deep.equal({dummyControl: 1});
     expect(result).to.be.equal(1);
+  });
+
+  it('#getFolder - should get folder', () => {
+    // given:
+    control = new Control();
+    control.addFolder('dummyFolder');
+    let expectedFolder = { folder: true };
+    control.folders['dummyFolder'] = expectedFolder;
+
+    // then:
+    let result = control.getFolder('dummyFolder');
+
+    // when:
+    expect(result).to.equal(expectedFolder);
   });
 
   it('#set - should set new value to control', () => {
@@ -74,12 +129,14 @@ describe('Control', () => {
   });
 
   it('#init - should init controls', () => {
+    // given:
     control = new Control();
     control.add('dummyControl', 1);
     control.addWithLimits('dummyControl2', 2, 0, 5);
-
+    control.addWithListen('dummyControl2', 2);
+    // then:
     control.init();
-
+    // when:
     expect(control.gui).to.be.instanceof(dat.GUI);
   });
 

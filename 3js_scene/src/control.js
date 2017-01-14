@@ -9,11 +9,13 @@ export default class Control {
     this.get  = this.get.bind(this);
     this.addWithLimits = this.addWithLimits.bind(this);
     this.addWithListen = this.addWithListen.bind(this);
+    this.addWithOptions = this.addWithOptions.bind(this);
     this.init = this.init.bind(this);
     this.updateDisplay = this.updateDisplay.bind(this);
 
     this.controls = {};
     this.cconfig = {};
+    this.folders = {};
   }
 
   _set (control, value) {
@@ -39,6 +41,19 @@ export default class Control {
     };
   }
 
+  addWithOptions (control, value, options = {}) {
+    this._set(control, value);
+    this.cconfig[control] = { ...options };
+  }
+
+  addFolder (folder) {
+    this.folders[folder] = null;
+  }
+
+  getFolder (folder) {
+    return this.folders[folder];
+  }
+
   get (control) {
     return this.controls[control];
   }
@@ -51,16 +66,27 @@ export default class Control {
   init() {
     this.gui = new dat.GUI();
 
+    for (let folder in this.folders) {
+      this.folders[folder] = this.gui.addFolder(folder);
+    }
+
     for (let control in this.controls) {
+      let guiParent;
+      if (this.cconfig[control] && this.cconfig[control].folder !== undefined) {
+        guiParent = this.folders[this.cconfig[control].folder];
+      } else {
+        guiParent = this.gui;
+      }
+
       if (this.cconfig[control] && this.cconfig[control].lower !== undefined) {
         let { lower, higher} = this.cconfig[control];
-        this.gui.add(this.controls, control, lower, higher);
+        guiParent.add(this.controls, control, lower, higher);
       } else if (this.cconfig[control] && this.cconfig[control].listen === true) {
-        this.gui.add(this.controls, control).listen();
+        guiParent.add(this.controls, control).listen();
       } else{
-        this.gui.add(this.controls, control);
+        guiParent.add(this.controls, control);
       }
-    };
+    }
   }
 
   updateDisplay () {
