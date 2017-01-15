@@ -24,13 +24,28 @@ export default class MeshProperties extends BaseScene {
 
     let position = 'position';
     options = {
+      lower: -10,
+      higher: 10,
       folder: position,
       listen: true
     };
     this.control.addFolder(position);
-    this.control.addWithOptions('position.x', 0, { lower: -10, higher: 10, ...options });
-    this.control.addWithOptions('position.y', 4, { lower: -4, higher: 20, ...options });
-    this.control.addWithOptions('position.z', 0, { lower: -10, higher: 10, ...options });
+    this.control.addWithOptions('position.x', 0, {
+      onChange : function(value) {
+        this.cube.position.x = value;
+      },
+      ...options });
+    this.control.addWithOptions('position.y', 4, {
+      lower: -4, higher: 20,
+      onChange: function(value) {
+        this.cube.position.y = value;
+      },
+      ...options });
+    this.control.addWithOptions('position.z', 0, {
+      onChange: function(value) {
+        this.cube.position.z = value;
+      },
+      ...options });
 
     let rotation = 'rotation';
     options = {
