@@ -5,19 +5,68 @@ export default class MeshProperties extends BaseScene {
 
   constructor(w, h) {
     super(w,h);
+
+    this.translateCube = this.translateCube.bind(this);
   }
 
   addControls() {
-    //let folder = `Vertice ${i}`;
-    //let options = {
-      //lower: -10,
-      //higher: 10,
-      //folder: folder
-    //};
-    //this.control.addFolder(folder);
-    //this.control.addWithOptions(`${i}.x`, point.x, options);
-    //this.control.addWithOptions(`${i}.y`, point.y, options);
-    //this.control.addWithOptions(`${i}.z`, point.z, options);
+
+    let scale = 'scale';
+    let options = {
+      folder: scale,
+      lower: 0,
+      higher: 5
+    };
+    this.control.addFolder(scale);
+    this.control.addWithOptions('scale.x', 1, options);
+    this.control.addWithOptions('scale.y', 1, options);
+    this.control.addWithOptions('scale.z', 1, options);
+
+    let position = 'position';
+    options = {
+      folder: position,
+      listen: true
+    };
+    this.control.addFolder(position);
+    this.control.addWithOptions('position.x', 0, { lower: -10, higher: 10, ...options });
+    this.control.addWithOptions('position.y', 4, { lower: -4, higher: 20, ...options });
+    this.control.addWithOptions('position.z', 0, { lower: -10, higher: 10, ...options });
+
+    let rotation = 'rotation';
+    options = {
+      folder: rotation,
+      lower: -4,
+      higher: 4
+    };
+    this.control.addFolder(rotation);
+    this.control.addWithOptions('rotation.x', 0, options);
+    this.control.addWithOptions('rotation.y', 0, options);
+    this.control.addWithOptions('rotation.z', 0, options);
+
+    let translateGroup = 'translate';
+    options = {
+      folder : translateGroup,
+      lower: -10,
+      higher: 10
+    };
+    this.control.addFolder(translateGroup);
+    this.control.addWithOptions('translate.x', 0, options);
+    this.control.addWithOptions('translate.y', 0, options);
+    this.control.addWithOptions('translate.z', 0, options);
+
+    this.control.addWithOptions('translate', this.translateCube, {folder: translateGroup});
+
+    this.control.add('visible', true);
+  }
+
+  translateCube () {
+    this.cube.translateX(this.control.get('translate.x'));
+    this.cube.translateY(this.control.get('translate.y'));
+    this.cube.translateZ(this.control.get('translate.z'));
+
+    this.control.set('position.x', this.cube.position.x);
+    this.control.set('position.y', this.cube.position.y);
+    this.control.set('position.z', this.cube.position.z);
   }
 
   drawCube () {
@@ -63,6 +112,15 @@ export default class MeshProperties extends BaseScene {
   }
 
   renderControls() {
+    this.cube.visible = this.control.get('visible');
+    this.cube.rotation.x = this.control.get('rotation.x');
+    this.cube.rotation.y = this.control.get('rotation.y');
+    this.cube.rotation.z = this.control.get('rotation.z');
+
+    this.cube.scale.set(
+      this.control.get('scale.x'),
+      this.control.get('scale.y'),
+      this.control.get('scale.z'));
   }
 
 }
