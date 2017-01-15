@@ -78,13 +78,18 @@ export default class Control {
         guiParent = this.gui;
       }
 
+      let controlObject;
       if (this.cconfig[control] && this.cconfig[control].lower !== undefined) {
         let { lower, higher} = this.cconfig[control];
-        guiParent.add(this.controls, control, lower, higher);
+        controlObject = guiParent.add(this.controls, control, lower, higher);
       } else if (this.cconfig[control] && this.cconfig[control].listen === true) {
-        guiParent.add(this.controls, control).listen();
+        controlObject = guiParent.add(this.controls, control).listen();
       } else{
-        guiParent.add(this.controls, control);
+        controlObject = guiParent.add(this.controls, control);
+      }
+
+      if (this.cconfig[control] && this.cconfig[control]['onChange'] !== undefined) {
+        controlObject.onChange = this.cconfig[control]['onChange'];
       }
     }
   }

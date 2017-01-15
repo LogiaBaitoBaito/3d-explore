@@ -134,6 +134,15 @@ describe('Control', () => {
     control.add('dummyControl', 1);
     control.addWithLimits('dummyControl2', 2, 0, 5);
     control.addWithListen('dummyControl2', 2);
+    control.addFolder('folder');
+    control.addWithOptions('dummyOptions', 3, {
+      folder: 'folder',
+      lower: 0,
+      higher: 5,
+      onChange: () => {
+        console.log('on change');
+      }
+    });
     // then:
     control.init();
     // when:
