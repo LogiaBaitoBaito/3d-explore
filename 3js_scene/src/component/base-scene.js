@@ -128,9 +128,8 @@ export default class BaseScene {
   render() {
     this._statsPanel.updateStats();
 
-    this.animate();
-
     this.renderControls();
+    this.animate();
 
     this._renderer.render(this._scene, this._camera);
     requestAnimationFrame(this.render);

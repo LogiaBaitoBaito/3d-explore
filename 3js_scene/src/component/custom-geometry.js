@@ -23,9 +23,16 @@ export default class CustomGeometry  extends BaseScene {
     controlPoints.push(addPosition(0, 0, 3));
 
     controlPoints.map( (point, i) => {
-      this.control.addWithLimits(`Vertice ${i} x`, point.x, -10, 10);
-      this.control.addWithLimits(`Vertice ${i} y`, point.y, -10, 10);
-      this.control.addWithLimits(`Vertice ${i} z`, point.z, -10, 10);
+      let folder = `Vertice ${i}`;
+      let options = {
+        lower: -10,
+        higher: 10,
+        folder: folder
+      };
+      this.control.addFolder(folder);
+      this.control.addWithOptions(`${i}.x`, point.x, options);
+      this.control.addWithOptions(`${i}.y`, point.y, options);
+      this.control.addWithOptions(`${i}.z`, point.z, options);
     });
   }
 
@@ -57,10 +64,10 @@ export default class CustomGeometry  extends BaseScene {
       new THREE.Face3(3, 6, 4),
     ];
 
-    let geom = new THREE.Geometry();
-    geom.vertices = vertices;
-    geom.faces = faces;
-    geom.computeFaceNormals();
+    this.geometry = new THREE.Geometry();
+    this.geometry.vertices = vertices;
+    this.geometry.faces = faces;
+    this.geometry.computeFaceNormals();
 
     let materials = [
       new THREE.MeshLambertMaterial({
@@ -73,12 +80,12 @@ export default class CustomGeometry  extends BaseScene {
     ];
 
     // draw in scene
-    let mesh = THREE.SceneUtils.createMultiMaterialObject(geom, materials);
-    mesh.traverse( (element) => element.castShadow = true );
+    this.mesh = THREE.SceneUtils.createMultiMaterialObject(this.geometry, materials);
+    this.mesh.traverse( (element) => element.castShadow = true );
 
-    this._scene.add(mesh);
+    this._scene.add(this.mesh);
 
-    return geom;
+    return this.geometry;
  }
 
   positionScene () {
@@ -99,10 +106,28 @@ export default class CustomGeometry  extends BaseScene {
     this.drawGeometry();
   }
 
+  drawPoint(x, y, z) {
+    let dotGeometry = new THREE.Geometry();
+    dotGeometry.vertices.push(new THREE.Vector3( x, y, z));
+    let dotMaterial = new THREE.PointsMaterial( { size: 1, sizeAttenuation: false } );
+    let dot = new THREE.Points( dotGeometry, dotMaterial );
+    this._scene.add( dot );
+  }
+
   renderControls() {
-    //this._camera.position.x = this.control.get('camera-x');
-    //this._camera.position.y = this.control.get('camera-y');
-    //this._camera.position.z = this.control.get('camera-z');
+    this.mesh.children.map((child) => {
+      child.dynamic = true;
+      child.geometry.vertices.map((v,i) => {
+        let point = [
+          this.control.get(`${i}.x`),
+          this.control.get(`${i}.y`),
+          this.control.get(`${i}.z`)
+        ];
+        this.drawPoint(...point);
+        v.set(...point);
+      });
+      child.geometry.verticesNeedUpdate = true;
+    });
   }
 
 }
