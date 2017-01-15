@@ -7,7 +7,8 @@ module.exports = {
     //commons: ['./src/control.js', './src/stats.js'],
     bundle: './src/app.js',
     geometries: './src/geometries.js',
-    custom: './src/custom-geometry.js'
+    custom: './src/custom-geometry.js',
+    meshprops: './src/mesh-properties.js'
   },
   output: {
     path: __dirname,
@@ -19,7 +20,7 @@ module.exports = {
       name: "commons",
       filename: "commons.js",
       minChunks: 3,
-      chunks: ['bundle', 'geometries', 'custom']
+      chunks: ['bundle', 'geometries', 'custom', 'meshprops']
 
       // chunks: ["pageA", "pageB"],
       // (Only use these entries)
